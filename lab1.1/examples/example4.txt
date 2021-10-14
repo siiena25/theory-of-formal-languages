@@ -1,0 +1,4 @@
+constructors = g(1),A(0),q(3),f(2)
+variables = x
+first = f(q(x,x,x),f(x,x))
+second = f(x)
