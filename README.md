@@ -82,34 +82,34 @@ Result of replacement: f(q(x, x, x), f(x, x))
 
 ### Test1:
 
-fgf -> ghhg
-hh ->
+fgf -> ghhg  
+hh ->  
 
 System may be not confluent.
 Have overlap in fgf: f.
 
 ### Test2:
 
-aabbclrdgoprlg;rlc -> x
-regrpdg -> y
-qweeretertr -> z
+aabbclrdgoprlg;rlc -> x  
+regrpdg -> y  
+qweeretertr -> z  
 
 System may be not confluent.
 Have overlap in regrpdg: r.
 
 ### Test3:
 
-qwerty -> ytrewq
-hh -> qwwwwq
+qwerty -> ytrewq  
+hh -> qwwwwq  
 
 System may be not confluent.
 Have overlap in hh: h.
 
 ### Test4:
 
-abcdeed -> ee
-qwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww -> glgdpfglpdxmeortrjtvggf
-lplrpleptlcprlvp -> lgtvprptlpyht
-cfrsgtorceo -> troyvk6pylpy
+abcdeed -> ee  
+qwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww -> glgdpfglpdxmeortrjtvggf  
+lplrpleptlcprlvp -> lgtvprptlpyht  
+cfrsgtorceo -> troyvk6pylpy  
 
 System is confluent.
