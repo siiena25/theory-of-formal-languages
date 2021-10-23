@@ -3,7 +3,7 @@
 Дана сигнатура для TRS. Написать алгоритм
 унификации линейных термов в этой сигнатуре.
 
-### Test1:
+### Test:
 
 Input constructors: g(1),A(0),f(2)  
 Input variabes: x,y,z,w,v  
@@ -16,71 +16,13 @@ Parsed constants: [A]
 
 First term replacement: w=f(y, x)  
 Second term replacement: z=g(A)  
-Result of replacement: f(f(y, x), g(A))  
-
-### Test2:
-
-Input constructors: g(1),A(0),f(3)  
-Input variabes: x,y,z,w,v  
-Input first term: f(w,f(g(A),x,y),g(A))  
-Input second term: f(f(y,x,g(z)),z,w)  
-
-Parsed variable names: [x, y, z, w, v]  
-Parsed constructor names: {g=g(1), f=f(3)}  
-Parsed constants: [A]  
-
-First term replacement: w=f(y, x, g(z))  
-Second term replacement: z=f(g(A), x, y), w=g(A)  
-Result of replacement: f(f(y, x, g(z)), f(g(A), x, y), g(A))  
-
-### Test3:
-
-Input constructors: g(1),A(0),q(3),f(2)  
-Input variabes: x,y,z,w,v  
-Input first term: f(q(x,y,z),f(z,z))  
-Input second term: g(q(x,y,z))  
-
-Parsed variable names: [x, y, z, w, v]  
-Parsed constructor names: {g=g(1), q=q(3), f=f(2)}  
-Parsed constants: [A]  
-
-Unable to unity.
-
-### Test4:
-
-Input constructors: g(1),A(0),q(3),f(2)  
-Input variabes: x  
-Input first term: f(q(x,x,x),f(x,x))  
-Input second term: f(x)  
-
-Parsed variable names: [x]  
-Parsed constructor names: {g=g(1), q=q(3), f=f(2)}  
-Parsed constants: [A]  
-
-Unable to parse term2: Number of arguments doesn't match: f
-
-### Test5:
-
-Input constructors: g(1),A(0),q(3),f(2)  
-Input variabes: x  
-Input first term: f(q(x,x,x),f(x,x))  
-Input second term: f(x,x)  
-
-Parsed variable names: [x]  
-Parsed constructor names: {g=g(1), q=q(3), f=f(2)}  
-Parsed constants: [A]  
-
-First term replacement:  
-Second term replacement: x=q(x, x, x), x=f(x, x)  
-Result of replacement: f(q(x, x, x), f(x, x))  
-
-
+Result of replacement: f(f(y, x), g(A)) 
 
 ## Lab1.2
 
 Написать алгоритм проверки конфлюэнтности SRS по перекрытию.
 
-### Test1:
+### Test:
 
 fgf -> ghhg  
 hh ->  
@@ -88,28 +30,106 @@ hh ->
 System may be not confluent.
 Have overlap in fgf: f.
 
-### Test2:
+## Lab2.3
 
-aabbclrdgoprlg;rlc -> x  
-regrpdg -> y  
-qweeretertr -> z  
+Реализовать алгоритм преобразования DFA в regex.
 
-System may be not confluent.
-Have overlap in regrpdg: r.
+### Test:
 
-### Test3:
+S=q1
+A=q3,q4,q5
+E=a,b,c,d
+Q=q1,q2,q3,q4,q5
+q1,a=q2
+q2,b=q4
+q2,c=q3
+q2,d=q5
 
-qwerty -> ytrewq  
-hh -> qwwwwq  
+### Output:
 
-System may be not confluent.
-Have overlap in hh: h.
+5-state DFA
+Start: q1
+Accept: q3 q4 q5 
+All States: q1 q2 q3 q4 q5 
+Transitions: 
+q1 -a-> q2
+q2 -b-> q4
+q2 -c-> q3
+q2 -d-> q5
 
-### Test4:
+Adding new start state (start)
+Adding new final state (finish)
 
-abcdeed -> ee  
-qwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww -> glgdpfglpdxmeortrjtvggf  
-lplrpleptlcprlvp -> lgtvprptlpyht  
-cfrsgtorceo -> troyvk6pylpy  
+7-state GNFA
+Start: start
+Accept: finish 
+All States: start q1 q2 q3 q4 q5 finish 
+Transitions: 
+q1 -a-> q2
+q2 -b-> q4
+q2 -c-> q3
+q2 -d-> q5
+q3 -ε-> finish
+q4 -ε-> finish
+q5 -ε-> finish
+start -ε-> q1
 
-System is confluent.
+Removing state q5
+
+6-state GNFA
+Start: start
+Accept: finish 
+All States: start q1 q2 q3 q4 finish 
+Transitions: 
+q1 -a-> q2
+q2 -b-> q4
+q2 -c-> q3
+q2 -d-> finish
+q3 -ε-> finish
+q4 -ε-> finish
+start -ε-> q1
+
+Removing state q4
+
+5-state GNFA
+Start: start
+Accept: finish 
+All States: start q1 q2 q3 finish 
+Transitions: 
+q1 -a-> q2
+q2 -c-> q3
+q2 -(b+d)-> finish
+q3 -ε-> finish
+start -ε-> q1
+
+Removing state q3
+
+4-state GNFA
+Start: start
+Accept: finish 
+All States: start q1 q2 finish 
+Transitions: 
+q1 -a-> q2
+q2 -(c+(b+d))-> finish
+start -ε-> q1
+
+Removing state q2
+
+3-state GNFA
+Start: start
+Accept: finish 
+All States: start q1 finish 
+Transitions: 
+q1 -a(c+(b+d))-> finish
+start -ε-> q1
+
+Removing state q1
+
+2-state GNFA
+Start: start
+Accept: finish 
+All States: start finish 
+Transitions: 
+start -a(c+(b+d))-> finish
+
+Regex: a(c+(b+d))
