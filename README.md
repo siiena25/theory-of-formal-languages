@@ -67,13 +67,13 @@ Time for academic/negation/lazy regex in ns:
 
 ### Test:
 
-X = (a|b)X+bY+aab
-Y=aX + a
+X = (a|b)X+bY+aab  
+Y=aX + a  
 
 ### Output:
 
-(a|b)*(bY+aab)
-(a(a|b)*b)*(a+a(a|b)*aab+a(a|b)*bY)
+(a|b)*(bY+aab)  
+(a(a|b)*b)*(a+a(a|b)*aab+a(a|b)*bY)  
 
 ## Lab2.3
 
