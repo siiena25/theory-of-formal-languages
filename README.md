@@ -36,100 +36,100 @@ Have overlap in fgf: f.
 
 ### Test:
 
-S=q1
-A=q3,q4,q5
-E=a,b,c,d
-Q=q1,q2,q3,q4,q5
-q1,a=q2
-q2,b=q4
-q2,c=q3
-q2,d=q5
+S=q1  
+A=q3,q4,q5  
+E=a,b,c,d  
+Q=q1,q2,q3,q4,q5  
+q1,a=q2  
+q2,b=q4  
+q2,c=q3  
+q2,d=q5  
 
 ### Output:
 
-5-state DFA
-Start: q1
-Accept: q3 q4 q5 
-All States: q1 q2 q3 q4 q5 
-Transitions: 
-q1 -a-> q2
-q2 -b-> q4
-q2 -c-> q3
-q2 -d-> q5
+5-state DFA  
+Start: q1  
+Accept: q3 q4 q5   
+All States: q1 q2 q3 q4 q5   
+Transitions:   
+q1 -a-> q2  
+q2 -b-> q4  
+q2 -c-> q3  
+q2 -d-> q5  
 
-Adding new start state (start)
-Adding new final state (finish)
+Adding new start state (start)  
+Adding new final state (finish)  
 
-7-state GNFA
-Start: start
-Accept: finish 
-All States: start q1 q2 q3 q4 q5 finish 
-Transitions: 
-q1 -a-> q2
-q2 -b-> q4
-q2 -c-> q3
-q2 -d-> q5
-q3 -ε-> finish
-q4 -ε-> finish
-q5 -ε-> finish
-start -ε-> q1
+7-state GNFA  
+Start: start  
+Accept: finish   
+All States: start q1 q2 q3 q4 q5 finish   
+Transitions:   
+q1 -a-> q2  
+q2 -b-> q4  
+q2 -c-> q3  
+q2 -d-> q5  
+q3 -ε-> finish  
+q4 -ε-> finish  
+q5 -ε-> finish  
+start -ε-> q1  
 
-Removing state q5
+Removing state q5  
 
-6-state GNFA
-Start: start
-Accept: finish 
-All States: start q1 q2 q3 q4 finish 
-Transitions: 
-q1 -a-> q2
-q2 -b-> q4
-q2 -c-> q3
-q2 -d-> finish
-q3 -ε-> finish
-q4 -ε-> finish
-start -ε-> q1
+6-state GNFA    
+Start: start  
+Accept: finish   
+All States: start q1 q2 q3 q4 finish   
+Transitions:   
+q1 -a-> q2  
+q2 -b-> q4  
+q2 -c-> q3  
+q2 -d-> finish  
+q3 -ε-> finish  
+q4 -ε-> finish  
+start -ε-> q1  
 
-Removing state q4
+Removing state q4  
 
-5-state GNFA
-Start: start
-Accept: finish 
-All States: start q1 q2 q3 finish 
-Transitions: 
-q1 -a-> q2
-q2 -c-> q3
-q2 -(b+d)-> finish
-q3 -ε-> finish
-start -ε-> q1
+5-state GNFA  
+Start: start  
+Accept: finish   
+All States: start q1 q2 q3 finish   
+Transitions:   
+q1 -a-> q2  
+q2 -c-> q3  
+q2 -(b+d)-> finish  
+q3 -ε-> finish  
+start -ε-> q1  
 
-Removing state q3
+Removing state q3  
 
-4-state GNFA
-Start: start
-Accept: finish 
-All States: start q1 q2 finish 
-Transitions: 
-q1 -a-> q2
-q2 -(c+(b+d))-> finish
-start -ε-> q1
+4-state GNFA  
+Start: start  
+Accept: finish   
+All States: start q1 q2 finish   
+Transitions:   
+q1 -a-> q2  
+q2 -(c+(b+d))-> finish  
+start -ε-> q1  
 
-Removing state q2
+Removing state q2  
 
-3-state GNFA
-Start: start
-Accept: finish 
-All States: start q1 finish 
-Transitions: 
-q1 -a(c+(b+d))-> finish
-start -ε-> q1
+3-state GNFA  
+Start: start  
+Accept: finish   
+All States: start q1 finish   
+Transitions:   
+q1 -a(c+(b+d))-> finish  
+start -ε-> q1  
 
-Removing state q1
+Removing state q1  
 
-2-state GNFA
-Start: start
-Accept: finish 
-All States: start finish 
-Transitions: 
-start -a(c+(b+d))-> finish
+2-state GNFA  
+Start: start  
+Accept: finish   
+All States: start finish   
+Transitions:   
+start -a(c+(b+d))-> finish  
 
-Regex: a(c+(b+d))
+Regex: a(c+(b+d))  
