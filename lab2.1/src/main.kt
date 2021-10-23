@@ -25,9 +25,10 @@ fun main() {
         checkMatchWithRegex(numberInBinary, lazyRegex, timeForLazyRegex)
     }
 
-    println(timeForAcademicRegex)
-    println(timeForNegationRegex)
-    println(timeForLazyRegex)
+    println("Time for academic/negation/lazy regex in ns: ")
+    for (i in 0 until lineList.size) {
+        println((i + 1).toString() + " test: \t" + timeForAcademicRegex[i] + "\t" + timeForNegationRegex[i] + "\t" + timeForLazyRegex[i] + "\t")
+    }
 }
 
 fun checkMatchWithRegex(numberInBinary: String, academicRegex: Regex, timeForRegex: MutableList<Long>) {
