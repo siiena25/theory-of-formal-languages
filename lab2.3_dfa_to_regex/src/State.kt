@@ -1,5 +1,9 @@
 class State(var label: String, var isAccept: Boolean, var isStart: Boolean) {
-    class Transition(public var from: String, public var to: String, public var value: String)
+    class Transition(
+        var from: String, 
+        var to: String, 
+        var value: String
+        )
 
     var inTransitions: MutableMap<String, Transition> = mutableMapOf()
     var outTransitions: MutableMap<String, Transition> = mutableMapOf()

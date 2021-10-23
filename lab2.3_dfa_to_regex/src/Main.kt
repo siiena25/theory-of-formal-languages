@@ -8,9 +8,30 @@ private var fsm: MutableMap<String, State> = mutableMapOf()
 private var start: String = ""
 private var accept: MutableList<String> = mutableListOf()
 private var allStates: MutableList<String> = mutableListOf()
-private const val filePath: String = "examples/example1.txt"
+private const val filePath: String = "examples/example4.txt"
 
 fun main() {
+    readDFA()
+
+    println(fsm.size.toString() + "-state DFA");
+    showFSM()
+    println("\nAdding new start state (start)")
+    println("Adding new final state (finish)")
+
+    addNewAccept()
+    addNewStart()
+
+    while (fsm.size > 2) {
+        println("\n" + fsm.size + "-state GNFA")
+        showFSM()
+        eliminateState()
+    }
+    println("\n2-state GNFA")
+    showFSM()
+    println("\nRegex: " + fsm["start"]!!.outTransitions["finish"]!!.value)
+}
+
+fun readDFA() {
     val file = File(filePath)
     val br = BufferedReader(FileReader(file))
     start = br.readLine().split("=")[1]
@@ -26,41 +47,20 @@ fun main() {
         fsm[it] = State(it, accept.contains(it), it == start)
     }
 
-    val s: String = br.readLine()
-
-    while (s != "") {
+    var s: String? = br.readLine()
+    while (s != "" && s != null) {
         val temp: MutableList<String> = s.split(",").toMutableList()
         val temp2: MutableList<String> = temp[1].split("=").toMutableList()
         val from: String = temp[0]
         val value: String = temp2[0]
         val to: String = temp2[1]
-
         if (from == to) {
             fsm[from]!!.addSelfLoop(value)
         } else {
             fsm[from]!!.addOutTransition(to, value)
             fsm[to]!!.addInTransition(from, value)
         }
-
-        println("\n------------------" + fsm.size + "-state DFA---------------------")
-        showFSM()
-        println("--------------------------------------------------")
-        println("Adding new start state (qinit)")
-        println("Adding new final state (qfin)")
-
-        addNewAccept()
-        addNewStart()
-
-        while (fsm.size > 2) {
-            println("-------------------" + fsm.size + "-state GNFA-------------------")
-            showFSM()
-            eliminateState()
-        }
-        println("-------------------2-state GNFA-------------------")
-        showFSM()
-        println("--------------------------------------------------")
-        println("Regular Expression: " + fsm["qinit"]!!.outTransitions["qfin"]!!.value)
-        println("--------------------------------------------------")
+        s = br.readLine()
     }
 }
 
@@ -71,13 +71,12 @@ private fun eliminateState() {
     val removeIn: MutableList<String> = mutableListOf()
     val removeOut: MutableList<String> = mutableListOf()
 
-    println("--------------------------------------------------")
-    println("Removing " + state?.label + "...")
+    println("\nRemoving state " + state!!.label)
 
-    state?.inTransitions?.values?.forEach { transIn ->
+    state.inTransitions.values.forEach { transIn ->
         state.outTransitions.values.forEach { transOut ->
-            transIn.value = if (transIn.value == "€") "" else transIn.value
-            transOut.value = if (transOut.value == "€") "" else transOut.value
+            transIn.value = if (transIn.value == "ε") "" else transIn.value
+            transOut.value = if (transOut.value == "ε") "" else transOut.value
             if (transIn.from == transOut.to) {
                 if (fsm[state.label]!!.selfLoop == null) {
                     fsm[transIn.from]!!.addSelfLoop(transIn.value + transOut.value)
@@ -111,12 +110,8 @@ private fun eliminateState() {
     }
     allStates.remove(removeState)
     fsm.remove(removeState)
-    removeOut.forEach { str ->
-        fsm[str]?.removeInTransition(removeState)
-    }
-    removeIn.forEach { str ->
-        fsm[str]?.removeOutTransition(removeState)
-    }
+    removeOut.forEach { str -> removeState?.let { fsm[str]?.removeInTransition(it) } }
+    removeIn.forEach { str -> removeState?.let { fsm[str]?.removeOutTransition(it) } }
 }
 
 private fun removeDeadState() {
@@ -131,9 +126,7 @@ private fun removeDeadState() {
                     removed = true
                 }
                 label = state.label
-                println("-------------------------------------------")
-                println("Dead State $label is deleted.")
-                println("-------------------------------------------")
+                println("\nDead State $label is deleted.\n")
             }
         }
         fsm.remove(label)
@@ -141,8 +134,8 @@ private fun removeDeadState() {
     }
 }
 
-private fun pickState(): String {
-    val queue: PriorityQueue<Map.Entry<String, Int>>? = null
+private fun pickState(): String? {
+    val queue: PriorityQueue<Map.Entry<String, Int>> = PriorityQueue { a: Map.Entry<String, Int>, b: Map.Entry<String, Int> -> b.value - a.value }
     var sum: Int
     fsm.values.forEach { state ->
         sum = 0
@@ -151,51 +144,49 @@ private fun pickState(): String {
                 sum += 1
             }
             sum += state.inTransitions.size + state.outTransitions.size
-            queue?.offer(AbstractMap.SimpleEntry(state.label, sum))
+            queue.offer(AbstractMap.SimpleEntry(state.label, sum))
         }
     }
-    var minimumState = ""
-    queue?.forEach { value ->
+    var minimumState: String? = null
+    queue.forEach { value ->
         minimumState = value.key
     }
     return minimumState
 }
 
 private fun showFSM() {
-    println("Start -> $start")
-    print("Accept -> ")
+    println("Start: $start")
+    print("Accept: ")
     accept.forEach { str -> print("$str ") }
-
-    print("\nAll States -> ")
+    print("\nAll States: ")
     allStates.forEach { str -> print("$str ") }
-
     println("\nTransitions: ")
     for (state in fsm.values) {
         if (state.selfLoop != null) {
-            println("  " + state.selfLoop!!.from + "\t---" + state.selfLoop!!.value + "--->\t" + state.selfLoop!!.to)
+            println(state.selfLoop!!.from + " -" + state.selfLoop!!.value + "-> " + state.selfLoop!!.to)
         }
         for (tran in state.outTransitions.values) {
-            println("  " + tran.from + "\t---" + tran.value + "--->\t" + tran.to)
+            println(tran.from + " -" + tran.value + "-> " + tran.to)
         }
     }
 }
 
 private fun addNewStart() {
-    val newStart = State("qinit", isAccept = false, isStart = true)
-    newStart.addOutTransition(fsm[start]!!.label, "€")
+    val newStart = State("start", isAccept = false, isStart = true)
+    newStart.addOutTransition(fsm[start]!!.label, "ε")
     fsm[newStart.label] = newStart
     fsm[start]!!.isStart = false
-    fsm[start]!!.addInTransition(newStart.label, "€")
+    fsm[start]!!.addInTransition(newStart.label, "ε")
     start = newStart.label
     allStates.add(0, newStart.label)
 }
 
 private fun addNewAccept() {
-    val newAccept = State("qfin", isAccept = true, isStart = false)
+    val newAccept = State("finish", isAccept = true, isStart = false)
     fsm.values.forEach { state ->
         if (accept.contains(state.label)) {
-            newAccept.addInTransition(state.label, "€")
-            state.addOutTransition(newAccept.label, "€")
+            newAccept.addInTransition(state.label, "ε")
+            state.addOutTransition(newAccept.label, "ε")
             state.isAccept = false
             accept.remove(state.label)
         }
