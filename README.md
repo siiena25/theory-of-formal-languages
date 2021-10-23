@@ -60,6 +60,21 @@ Time for academic/negation/lazy regex in ns:
 9 test: 	123255	131021	176328  	  
 10 test: 	225934	327348	190156  	  
 
+## Lab2.1
+
+Реализовать алгоритм решения системы регулярных
+выражений с беззвездными коэффициентами.
+
+### Test:
+
+X = (a|b)X+bY+aab
+Y=aX + a
+
+### Output:
+
+(a|b)*(bY+aab)
+(a(a|b)*b)*(a+a(a|b)*aab+a(a|b)*bY)
+
 ## Lab2.3
 
 Реализовать алгоритм преобразования DFA в regex.
