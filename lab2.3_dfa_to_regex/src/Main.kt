@@ -8,7 +8,7 @@ private var fsm: MutableMap<String, State> = mutableMapOf()
 private var start: String = ""
 private var accept: MutableList<String> = mutableListOf()
 private var allStates: MutableList<String> = mutableListOf()
-private const val filePath: String = "examples/example4.txt"
+private const val filePath: String = "examples/example1.txt"
 
 fun main() {
     readDFA()
@@ -34,13 +34,13 @@ fun main() {
 fun readDFA() {
     val file = File(filePath)
     val br = BufferedReader(FileReader(file))
-    start = br.readLine().split("=")[1]
+    start = br.readLine().replace(" ", "").split("=")[1]
     accept = mutableListOf(
-        *br.readLine().split("=")[1].split(",".toRegex()).toTypedArray()
+        *br.readLine().replace(" ", "").split("=")[1].split(",".toRegex()).toTypedArray()
     )
     br.readLine()
     allStates = mutableListOf(
-        *br.readLine().split("=".toRegex()).toTypedArray()[1].split(",".toRegex()).toTypedArray()
+        *br.readLine().replace(" ", "").split("=".toRegex()).toTypedArray()[1].split(",".toRegex()).toTypedArray()
     )
 
     allStates.forEach {
