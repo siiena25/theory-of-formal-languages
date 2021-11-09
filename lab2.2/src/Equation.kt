@@ -13,7 +13,7 @@ class Equation(equation: String) {
 
         equation.replace(Regex(" \n"), "")
 
-        if (!variables.contains(equation[ind])) {
+        while (!variables.contains(equation[ind])) {
             ind += 1
         }
         name = equation[ind]
@@ -64,10 +64,16 @@ class Equation(equation: String) {
                 }
             res += "+"
         }
-        return res.substring(0, res.length - 1)
+        return if (res == "") res
+        else res.substring(0, res.length - 1)
     }
 
     fun getSolution(): String {
-        return kleeneIteration(coefficient) + "(" + getEquation() + ")"
+        var solution = kleeneIteration(coefficient)
+        val eqStr = getEquation()
+        if (eqStr != "") {
+            solution += brakes(eqStr)
+        }
+        return solution
     }
 }
