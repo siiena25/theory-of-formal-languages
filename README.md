@@ -178,3 +178,53 @@ Transitions:
 start -a(c+(b+d))-> finish  
 
 Regex: a(c+(b+d))  
+
+
+
+## Lab3
+
+Реализовать алгоритм преобразования PDA в CFG.
+
+### Test:
+
+<q,A>$  
+<q,a,A>-><q,B>  
+<q,b,B>-><q,>  
+
+### Output:
+
+S -> A  
+A -> aB  
+B -> b  
+![image](https://user-images.githubusercontent.com/85502799/142500501-366518e2-0f78-45cb-af8d-91e1da558f39.png)
+
+### Test:
+
+<q1,A>$  
+<q1,a,A>-><q2,AA>  
+<q2,b,B>-><q2,B>  
+<q2,b,A>-><q2,>  
+
+### Output:
+
+S -> B  
+B -> aFF  
+F -> b  
+![image](https://user-images.githubusercontent.com/85502799/142500625-a43bb65c-10b1-41c6-96d6-c450329860d1.png)
+
+### Test:
+
+<q1,A>$  
+<q1,a,A>-><q2,AA>  
+<q2,b,A>-><q3,A>  
+<q3,c,A>-><q4,AAA>  
+<q4,d,A>-><q4,>  
+
+### Output:
+
+S -> D  
+D -> aHP  
+H -> bL  
+L -> cPPP  
+P -> d  
+![image](https://user-images.githubusercontent.com/85502799/142500724-67b5727a-6797-445e-b37f-7ae688e2ae26.png)
