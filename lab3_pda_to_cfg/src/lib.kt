@@ -250,11 +250,11 @@ fun makeGraphviz(pda: PDA, testPath: String) {
     val command = StringBuilder("echo 'digraph { rankdir=\"LR\";")
     for (tr in pda.transitions) {
         command.append(tr.state_1 + "->" + tr.state_2)
-        command.append("[label=\"" + tr.letter_1 + ", " + tr.stack_s_1 + "/")
-        for (stack_s in tr.stack_ss) {
+        command.append("[label=\"" + tr.letter_1 + ", " + tr.stack_s1 + "/")
+        for (stack_s in tr.stack_s2) {
             command.append(stack_s)
         }
-        if (tr.stack_ss.size == 0) {
+        if (tr.stack_s2.size == 0) {
             command.append("ε")
         }
         command.append("\"]")
@@ -331,17 +331,17 @@ fun getStatePermutations(
     return result
 }
 
-fun goInRules(
+fun reachable(
     from: String?,
-    rules: ArrayList<Rule>,
+    rules: MutableList<Rule>,
     to: ArrayList<String?>
-): ArrayList<String?> {
+): MutableList<String?> {
     to.add(from)
     for (rule in rules) {
         if (rule.from == from) {
             for (nterm in rule.nterms) {
                 if (!to.contains(nterm)) {
-                    goInRules(nterm, rules, to)
+                    reachable(nterm, rules, to)
                 }
             }
         }
