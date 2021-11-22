@@ -8,10 +8,10 @@ var terminals: MutableMap<Term, String> = HashMap()
 var counter = 0
 var pda: PDA? = null
 var rules: MutableList<Rule> = mutableListOf()
-val resultRules: MutableList<Rule> = mutableListOf()
+var resultRules: MutableList<Rule> = mutableListOf()
 var productive: MutableList<String> = mutableListOf()
 var reachable: MutableList<String?> = mutableListOf()
-const val TEST_PATH = "src/examples/example3.txt"
+const val TEST_PATH = "src/examples/example4.txt"
 
 fun main() {
     BufferedReader(FileReader(TEST_PATH)).use { br ->
@@ -60,9 +60,10 @@ fun addRules() {
 }
 
 fun getResultCFG() {
-    for (i in resultRules.indices) {
+    var size = resultRules.size
+    for (i in 0 until size) {
         val rule = StringBuilder(resultRules[i].toString())
-        for (j in i + 1 until resultRules.size) {
+        for (j in i + 1 until size) {
             if (resultRules[j].from == resultRules[i].from) {
                 rule.append("|")
                 if (resultRules[j].term != null) {
@@ -72,6 +73,7 @@ fun getResultCFG() {
                     rule.append(nterm)
                 }
                 resultRules.remove(resultRules[j])
+                size -= 1
             }
         }
         println(rule)
