@@ -1,0 +1,6 @@
+$EXTRACTIONS=10
+[S]::=a[A]b
+[A]::=a
+[A]::=a[A]b
+[A]::=a[A][B]
+[B]::=b
