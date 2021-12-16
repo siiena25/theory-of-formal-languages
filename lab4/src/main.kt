@@ -299,20 +299,15 @@ fun attachmentRightContext(grammar: Grammar, conflictNTerms: Set<String?>): Gram
 fun clarificationRightContext(grammar: Grammar, conflictNTerms: Set<String?>?): Grammar {
     step2Bc.clear()
     val resGrammar = Grammar(N = grammar.N)
+
     val rulesFrom2: Set<Rule> = step2(grammar, conflictNTerms!!)
-    if (step2Bc.isEmpty()) {
-        return grammar
-    }
-    count++
-
     resGrammar.rules = ArrayList(rulesFrom2)
+
     val rulesFrom3: Set<Rule> = step3(resGrammar)
-
     resGrammar.rules = ArrayList(rulesFrom3)
-    val rulesFrom4: Set<Rule> = step4(resGrammar)
 
+    val rulesFrom4: Set<Rule> = step4(resGrammar)
     resGrammar.rules = ArrayList(rulesFrom4)
-    count++
 
     return resGrammar
 }
@@ -349,7 +344,6 @@ fun step2(grammar: Grammar, conflictNTerms: Set<String?>): Set<Rule> {
                             nTerm = templateRule.nTerm,
                             terms = terms
                         )
-                        println(rule1)
                         newTemplateRules.add(rule1)
                     }
                 }
@@ -434,7 +428,6 @@ fun getFirstNTerms(nTerm: String?, grammar: Grammar, result: MutableSet<String?>
 }
 
 var startSymbol = "[S]"
-var count = 0
 var step2Bc: MutableMap<String, ArrayList<String>> = HashMap()
 
 @Throws(IOException::class)
@@ -443,8 +436,9 @@ fun main() {
     if (grammar == null) {
         println("Uncorrect.")
     } else {
+        var count = 0
         var resAutomate: Automate? = null
-        while (count < grammar!!.N!!) {
+        while (count <= grammar!!.N!!) {
             grammar = removeEpsilons(grammar)
             val automate = generateAutomate(grammar)
             val conflictNTerms = findConflicts(automate)
@@ -455,6 +449,7 @@ fun main() {
                 resAutomate = automate
                 break
             }
+            count += 1
         }
         if (resAutomate == null) {
             println("Clarification of right context occured more than N times.")

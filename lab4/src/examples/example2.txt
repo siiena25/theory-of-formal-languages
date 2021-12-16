@@ -1,5 +1,7 @@
-$EXTRACTIONS=10
-[S]::=a[A]b
-[A]::=a
-[A]::=a[A][B]
-[B]::=a
+$EXTRACTIONS=15
+[W]::=a[W]a
+[W]::=b[W]b
+[W]::=[S]
+[S]::=c[S]c
+[S]::=d[S]d
+[S]::=cac$
